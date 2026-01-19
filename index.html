@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Accessibility Text Enhancer - A real-time browser extension for web accessibility enhancement">
+    <meta name="keywords" content="accessibility, WCAG, browser extension, web accessibility, assistive technology">
+    <meta name="author" content="Octavio Silva">
+    
+    <title>Accessibility Text Enhancer - Make the Web Accessible for Everyone</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --primary-dark: #5568d3;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --text-dark: #1a202c;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --success: #48bb78;
+            --warning: #ed8936;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            animation: pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero .stats {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            display: block;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-3px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--bg-light);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            line-height: 1.8;
+        }
+
+        /* Demo Section */
+        .demo {
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .demo-video {
+            background: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .demo-video img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        /* Research Section */
+        .research {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .research-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .research-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .research-stat {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .research-stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .research-stat-label {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        /* Installation Section */
+        .installation {
+            padding: 6rem 2rem;
+            background: var(--bg-light);
+        }
+
+        .installation-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .steps {
+            display: grid;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .step {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            display: flex;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .step-content p {
+            color: var(--text-light);
+        }
+
+        /* Code block */
+        .code-block {
+            background: var(--text-dark);
+            color: #4ade80;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--text-dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.25rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .hero .stats {
+                gap: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .step {
+                flex-direction: column;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Accessibility Text Enhancer</h1>
+            <p class="subtitle">Empowering users to make the web accessible in real-time</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">100%</span>
+                    <span class="stat-label">Universal Compatibility</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">&lt;5ms</span>
+                    <span class="stat-label">Enhancement Speed</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Accessibility Features</span>
+                </div>
+            </div>
+
+            <div class="cta-buttons">
+                <a href="https://github.com/FrankenSama/accessibility-text-enhancer" class="btn btn-primary">
+                    Download Extension
+                </a>
+                <a href="#features" class="btn btn-secondary">
+                    Explore Features
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Eight accessibility enhancements that work instantly on any website</p>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔤</div>
+                <h3>Bold Toggle</h3>
+                <p>Increase text weight for improved readability. Perfect for users with visual impairments or reading difficulties.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">✏️</div>
+                <h3>Smart Highlighting</h3>
+                <p>Add yellow backgrounds or outlines to emphasize important text. Helps with focus and information retention.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">📏</div>
+                <h3>Font Scaling</h3>
+                <p>Dynamically adjust font sizes from 8px to 50px. Better than browser zoom—targets specific content.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🎨</div>
+                <h3>Contrast Fixer</h3>
+                <p>Automatically fix low-contrast text to meet WCAG standards. Ensures readability for low-vision users.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">↔️</div>
+                <h3>Text Spacing</h3>
+                <p>Adjust letter and word spacing for dyslexia-friendly reading. Reduces visual crowding.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">🔊</div>
+                <h3>Read Aloud</h3>
+                <p>Built-in text-to-speech for auditory access. Works instantly without additional software.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">↶</div>
+                <h3>Undo/Redo</h3>
+                <p>Full history tracking with keyboard shortcuts. Experiment freely—mistakes are reversible.</p>
+            </div>
+
+            <div class="feature-card fade-in">
+                <div class="feature-icon">⚙️</div>
+                <h3>Site Settings</h3>
+                <p>Save preferences per website. Auto-apply your favorite enhancements when you return.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section class="demo">
+        <div class="demo-container">
+            <h2 class="section-title" style="color: white;">See It In Action</h2>
+            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">
+                Watch how the extension transforms web accessibility
+            </p>
+
+            <div class="demo-video">
+                <img src="https://via.placeholder.com/1000x600/667eea/ffffff?text=Extension+Demo+Video" 
+                     alt="Demo video showing the extension in action">
+                <p style="margin-top: 1rem; opacity: 0.9;">
+                    Select text on any webpage to activate the accessibility toolbar
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section -->
+    <section class="research">
+        <div class="research-content">
+            <h2 class="section-title">Research-Backed Solution</h2>
+            <p class="section-subtitle">
+                Developed as part of an MSc Computer Engineering dissertation at Solent University
+            </p>
+
+            <div class="research-stats">
+                <div class="research-stat">
+                    <span class="research-stat-value">20</span>
+                    <span class="research-stat-label">Websites Tested</span>
+                </div>
+                <div class="research-stat">
+                    <span class="research-stat-value">95%+</span>
+                    <span class="research-stat-label">Feature Success Rate</span>
+                </div>
+                <div class="research-stat">
+                    <span class="research-stat-value">2.5MB</span>
+                    <span class="research-stat-label">Memory Overhead</span>
+                </div>
+                <div class="research-stat">
+                    <span class="research-stat-value">&lt;3%</span>
+                    <span class="research-stat-label">CPU Impact</span>
+                </div>
+            </div>
+
+            <p style="color: var(--text-light); margin-top: 2rem; line-height: 1.8;">
+                This extension bridges the critical gap between <strong>identifying</strong> accessibility issues 
+                and <strong>fixing</strong> them. While tools like Lighthouse and axe-core excel at diagnostics, 
+                they leave users waiting for developers to implement fixes—a process that can take weeks, months, 
+                or may never happen.
+            </p>
+
+            <p style="color: var(--text-light); margin-top: 1rem; line-height: 1.8;">
+                Our user-centric approach provides <strong>immediate remediation</strong>, shifting from a 
+                compliance-driven diagnostic model to a user-empowering solution. The extension works universally 
+                across all websites with negligible performance impact.
+            </p>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="installation" class="installation">
+        <div class="installation-content">
+            <h2 class="section-title">Get Started in Minutes</h2>
+            <p class="section-subtitle">Install the extension and start enhancing web accessibility today</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Clone the Repository</h3>
+                        <p>Download the source code from GitHub</p>
+                        <div class="code-block">
+                            git clone https://github.com/FrankenSama/accessibility-text-enhancer.git<br>
+                            cd accessibility-text-enhancer
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Enable Developer Mode</h3>
+                        <p>Navigate to <code>chrome://extensions/</code> and toggle on "Developer mode" in the top-right corner</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Load the Extension</h3>
+                        <p>Click "Load unpacked" and select the accessibility-text-enhancer directory</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Start Enhancing!</h3>
+                        <p>Select any text on any webpage to see the accessibility toolbar appear. Click features to apply enhancements instantly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#installation">Installation</a></li>
+                    <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer">GitHub</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/blob/main/README.md">Documentation</a></li>
+                    <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/issues">Report Issues</a></li>
+                    <li><a href="https://www.w3.org/WAI/WCAG22/quickref/">WCAG Guidelines</a></li>
+                    <li><a href="https://webaim.org/">WebAIM</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul>
+                    <li><a href="https://github.com/FrankenSama">GitHub Profile</a></li>
+                    <li><a href="https://www.linkedin.com/in/octavio-silva-designer/">LinkedIn</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Academic</h4>
+                <ul>
+                    <li>Octavio Silva</li>
+                    <li>MSc Computer Engineering</li>
+                    <li>Solent University</li>
+                    <li>2024-2025</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 Octavio Silva. Licensed under MIT License.</p>
+            <p style="margin-top: 0.5rem;">Making the web accessible, one selection at a time ♿</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

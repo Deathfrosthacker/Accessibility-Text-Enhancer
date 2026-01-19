@@ -1,0 +1,292 @@
+/* Toolbar container styling */
+#accessibility-toolbar {
+    position: fixed;
+    z-index: 2147483647;
+    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    transform: translateX(-50%);
+    transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-wrap: wrap;
+    max-width: 380px;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+#accessibility-toolbar.light-mode {
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Button group containers */
+#accessibility-toolbar .button-group {
+    display: flex;
+    gap: 4px;
+    padding: 0 4px;
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#accessibility-toolbar.light-mode .button-group {
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+#accessibility-toolbar .button-group:last-child {
+    border-right: none;
+}
+
+/* Base button styling */
+#accessibility-toolbar button {
+    border: none;
+    background: rgba(74, 74, 74, 0.8);
+    color: white;
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    min-width: 70px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+}
+
+#accessibility-toolbar.light-mode button {
+    background: rgba(230, 230, 230, 0.9);
+    color: #333;
+}
+
+/* Button hover effects */
+#accessibility-toolbar button:hover {
+    background: rgba(90, 90, 90, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#accessibility-toolbar.light-mode button:hover {
+    background: rgba(200, 200, 200, 0.95);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Active button state */
+#accessibility-toolbar button:active {
+    transform: translateY(0);
+}
+
+#accessibility-toolbar button.active {
+    background: #4CAF50;
+    color: white;
+}
+
+#accessibility-toolbar.light-mode button.active {
+    background: #4CAF50;
+    color: white;
+}
+
+/* Size control buttons */
+#accessibility-toolbar .size-btn {
+    min-width: 40px;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+/* Icon buttons */
+#accessibility-toolbar .icon-btn {
+    min-width: 48px;
+    font-size: 18px;
+}
+
+/* Settings button */
+#accessibility-toolbar .settings-btn {
+    min-width: 36px;
+    padding: 8px;
+    background: rgba(100, 100, 100, 0.6);
+}
+
+#accessibility-toolbar.light-mode .settings-btn {
+    background: rgba(200, 200, 200, 0.7);
+}
+
+/* Tooltip styling */
+#accessibility-toolbar button::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-8px);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 1;
+}
+
+#accessibility-toolbar button:hover::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-4px);
+}
+
+/* Undo/Redo buttons */
+#accessibility-toolbar .history-btn {
+    min-width: 36px;
+    padding: 8px;
+}
+
+#accessibility-toolbar .history-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+#accessibility-toolbar .history-btn:disabled:hover {
+    transform: none;
+    background: rgba(74, 74, 74, 0.8);
+}
+
+/* Animation for toolbar appearance */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+#accessibility-toolbar.show {
+    animation: slideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Keyboard focus indicator */
+#accessibility-toolbar button:focus-visible {
+    outline: 2px solid #4CAF50;
+    outline-offset: 2px;
+}
+
+/* Settings panel */
+#accessibility-settings-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #2c2c2c;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+    z-index: 2147483646;
+    min-width: 320px;
+    max-width: 480px;
+    color: white;
+}
+
+#accessibility-settings-panel.light-mode {
+    background: white;
+    color: #333;
+}
+
+#accessibility-settings-panel h3 {
+    margin: 0 0 16px 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#accessibility-settings-panel .setting-item {
+    margin: 12px 0;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+}
+
+#accessibility-settings-panel.light-mode .setting-item {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+#accessibility-settings-panel label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+#accessibility-settings-panel input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+#accessibility-settings-panel .close-btn {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 16px;
+    width: 100%;
+    font-weight: 500;
+}
+
+/* Overlay for settings panel */
+#accessibility-settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 2147483645;
+    backdrop-filter: blur(4px);
+}
+
+/* Notification toast */
+.accessibility-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #323232;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    z-index: 2147483647;
+    animation: slideInToast 0.3s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    font-size: 14px;
+}
+
+@keyframes slideInToast {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #accessibility-toolbar {
+        max-width: 90vw;
+        padding: 10px 12px;
+    }
+    
+    #accessibility-toolbar button {
+        min-width: 60px;
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+}
