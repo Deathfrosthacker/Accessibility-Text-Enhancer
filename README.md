@@ -7,9 +7,7 @@
 ![Chrome](https://img.shields.io/badge/Chrome-Extension-yellow.svg)
 ![Accessibility](https://img.shields.io/badge/WCAG-2.2-purple.svg)
 
-**A real-time, user-driven browser extension for web accessibility enhancement**
-
-[Features](##features) • [Installation](#installation) • [Usage](#usage) • [Research](#research) • [Contributing](#contributing)
+**A real-time, user-driven browser extension for web accessibility enhancement**
 
 ![Demo Screenshot](docs/images/demo-screenshot.png)
 
