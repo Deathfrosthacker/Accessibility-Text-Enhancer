@@ -1,39 +1,45 @@
-// popup/popup.js - Enhanced version with full accessibility features
+// popup/popup.js
 
 document.addEventListener('DOMContentLoaded', function() {
     const toggle = document.getElementById('toggle');
     const statusDiv = document.getElementById('status');
     const enhancementCount = document.getElementById('enhancementCount');
-    const currentDomain = document.getElementById('currentDomain');
+    const currentDomainEl = document.getElementById('currentDomain');
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabContents = document.querySelectorAll('.tab-content');
 
-    // Get current tab information
+    // Track active tab domain for site-specific settings
+    let activeDomain = '';
+
+    // Get current tab information first, then load settings
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-        if (tabs[0]) {
-            const url = new URL(tabs[0].url);
-            currentDomain.textContent = url.hostname || 'N/A';
-        }
-    });
-
-    // Retrieve and apply saved extension state
-    chrome.storage.local.get([
-        'extensionEnabled', 
-        'sessionStats',
-        'globalSettings',
-        'siteSettings'
-    ], function(result) {
-        const isEnabled = result.extensionEnabled !== undefined ? result.extensionEnabled : true;
-        toggle.checked = isEnabled;
-        updateStatus(isEnabled);
-
-        if (result.sessionStats) {
-            enhancementCount.textContent = result.sessionStats.totalEnhancements || 0;
+        if (tabs[0] && tabs[0].url) {
+            try {
+                const url = new URL(tabs[0].url);
+                activeDomain = url.hostname || '';
+                currentDomainEl.textContent = activeDomain || 'N/A';
+            } catch (_) {
+                currentDomainEl.textContent = 'N/A';
+            }
         }
 
-        // Load global settings
-        loadGlobalSettings(result.globalSettings || {});
-        loadSiteSettings(result.siteSettings || {});
+        chrome.storage.local.get([
+            'extensionEnabled',
+            'sessionStats',
+            'globalSettings',
+            'siteSettings'
+        ], function(result) {
+            const isEnabled = result.extensionEnabled !== undefined ? result.extensionEnabled : true;
+            toggle.checked = isEnabled;
+            updateStatus(isEnabled);
+
+            if (result.sessionStats) {
+                enhancementCount.textContent = result.sessionStats.totalEnhancements || 0;
+            }
+
+            loadGlobalSettings(result.globalSettings || {});
+            loadSiteSettings(result.siteSettings || {});
+        });
     });
 
     // Tab switching
@@ -87,8 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Load site settings
     function loadSiteSettings(siteSettings) {
-        const currentDomain = new URL(chrome.runtime.getURL('')).hostname;
-        const settings = siteSettings[currentDomain] || {};
+        const settings = (activeDomain && siteSettings[activeDomain]) ? siteSettings[activeDomain] : {};
 
         document.getElementById('fontSize').value = settings.fontSize || 100;
         document.getElementById('lineHeight').value = settings.lineHeight || 1.5;
@@ -167,17 +172,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Save site-specific settings
     function saveSiteSettings(settings) {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            if (tabs[0]) {
-                const url = new URL(tabs[0].url);
-                const domain = url.hostname;
-
-                chrome.storage.local.get(['siteSettings'], function(result) {
-                    const siteSettings = result.siteSettings || {};
-                    siteSettings[domain] = settings;
-                    chrome.storage.local.set({ siteSettings: siteSettings });
-                });
-            }
+        if (!activeDomain) return;
+        chrome.storage.local.get(['siteSettings'], function(result) {
+            const siteSettings = result.siteSettings || {};
+            siteSettings[activeDomain] = settings;
+            chrome.storage.local.set({ siteSettings: siteSettings });
         });
     }
 
@@ -262,8 +261,8 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('contrast').value = preset.contrast;
         document.getElementById('colorBlindnessFilter').value = preset.colorBlindnessFilter;
         document.getElementById('darkMode').checked = preset.darkMode;
-        document.getElementById('reduceAnimations').checked = preset.reduceAnimations;
-        document.getElementById('highlightLinks').checked = preset.highlightLinks;
+        document.getElementById('reduceAnimations').checked = preset.reduceAnimations || false;
+        document.getElementById('highlightLinks').checked = preset.highlightLinks || false;
 
         updateSliderValues();
         applySettings();
@@ -328,10 +327,15 @@ document.addEventListener('DOMContentLoaded', function() {
             reader.onload = function(event) {
                 try {
                     const importedData = JSON.parse(event.target.result);
-                    chrome.storage.local.set({
-                        globalSettings: importedData.globalSettings,
-                        siteSettings: importedData.siteSettings
-                    }, function() {
+                    if (!importedData || typeof importedData !== 'object') throw new Error('Invalid format');
+                    const toSave = {};
+                    if (importedData.globalSettings && typeof importedData.globalSettings === 'object') {
+                        toSave.globalSettings = importedData.globalSettings;
+                    }
+                    if (importedData.siteSettings && typeof importedData.siteSettings === 'object') {
+                        toSave.siteSettings = importedData.siteSettings;
+                    }
+                    chrome.storage.local.set(toSave, function() {
                         alert('Settings imported successfully!');
                         location.reload();
                     });

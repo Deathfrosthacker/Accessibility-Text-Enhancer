@@ -3,733 +3,1439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Accessibility Text Enhancer - A real-time browser extension for web accessibility enhancement">
-    <meta name="keywords" content="accessibility, WCAG, browser extension, web accessibility, assistive technology">
+    <meta name="description" content="Accessibility Text Enhancer - A free, open-source browser extension for real-time web accessibility enhancement. Download for Chrome, Edge, and Brave.">
+    <meta name="keywords" content="accessibility, WCAG, browser extension, web accessibility, assistive technology, free download, open source">
     <meta name="author" content="Octavio Silva">
-    
-    <title>Accessibility Text Enhancer - Make the Web Accessible for Everyone</title>
-    
+    <meta property="og:title" content="Accessibility Text Enhancer - Free Browser Extension">
+    <meta property="og:description" content="Empower yourself to enhance web accessibility in real-time. Free, open-source, and works on every website.">
+
+    <title>Accessibility Text Enhancer - Free Browser Extension</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
         :root {
-            --primary: #667eea;
-            --primary-dark: #5568d3;
-            --secondary: #764ba2;
-            --accent: #f093fb;
-            --text-dark: #1a202c;
-            --text-light: #718096;
-            --bg-light: #f7fafc;
-            --success: #48bb78;
-            --warning: #ed8936;
+            --primary-50: #eff6ff;
+            --primary-100: #dbeafe;
+            --primary-200: #bfdbfe;
+            --primary-300: #93c5fd;
+            --primary-400: #60a5fa;
+            --primary-500: #3b82f6;
+            --primary-600: #2563eb;
+            --primary-700: #1d4ed8;
+            --primary-800: #1e40af;
+            --primary-900: #1e3a8a;
+
+            --secondary-50: #f0fdf4;
+            --secondary-400: #4ade80;
+            --secondary-500: #22c55e;
+            --secondary-600: #16a34a;
+
+            --success-500: #22c55e;
+            --warning-500: #f59e0b;
+            --error-500: #ef4444;
+
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
         }
 
+        html { scroll-behavior: smooth; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: var(--font-sans);
             line-height: 1.6;
-            color: var(--text-dark);
+            color: var(--neutral-800);
+            background: var(--neutral-50);
             overflow-x: hidden;
         }
 
-        /* Hero Section */
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 32px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        nav.scrolled .nav-logo { color: var(--neutral-900); }
+
+        .nav-logo-icon {
+            width: 32px; height: 32px;
+            background: var(--primary-500);
+            border-radius: var(--radius-sm);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 16px; color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        nav.scrolled .nav-links a { color: var(--neutral-600); }
+        .nav-links a:hover { color: white; }
+        nav.scrolled .nav-links a:hover { color: var(--primary-600); }
+
+        .nav-cta {
+            background: white !important;
+            color: var(--primary-700) !important;
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            font-weight: 600 !important;
+            box-shadow: var(--shadow-sm);
+        }
+
+        nav.scrolled .nav-cta {
+            background: var(--primary-600) !important;
+            color: white !important;
+        }
+
+        /* HERO */
         .hero {
             min-height: 100vh;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
+            background: linear-gradient(150deg, var(--primary-800) 0%, var(--primary-600) 55%, var(--primary-500) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
             overflow: hidden;
+            padding: 80px 32px 64px;
         }
 
         .hero::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
-            animation: pulse 15s ease-in-out infinite;
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 20% 60%, rgba(255,255,255,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 80% 30%, rgba(255,255,255,0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 100%, rgba(0,0,0,0.15) 0%, transparent 60%);
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+        .hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
         }
 
         .hero-content {
-            max-width: 1200px;
-            padding: 2rem;
+            max-width: 900px;
             text-align: center;
             position: relative;
             z-index: 1;
         }
 
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: white;
+            padding: 6px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.6s ease both;
+        }
+
+        .hero-badge .dot {
+            width: 8px; height: 8px;
+            background: var(--secondary-400);
+            border-radius: 50%;
+            animation: blink 2s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
         .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 1.5rem;
-            line-height: 1.2;
-            animation: fadeInUp 1s ease;
+            font-size: clamp(2.5rem, 6vw, 3.75rem);
+            font-weight: 800;
+            color: white;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            animation: fadeInUp 0.6s ease 0.1s both;
         }
 
-        .hero .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.95;
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #93c5fd, #bfdbfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255,255,255,0.85);
+            max-width: 640px;
+            margin: 0 auto 40px;
             font-weight: 300;
-            animation: fadeInUp 1s ease 0.2s both;
+            line-height: 1.7;
+            animation: fadeInUp 0.6s ease 0.2s both;
         }
 
-        .hero .stats {
+        .hero-ctas {
             display: flex;
-            gap: 3rem;
+            gap: 16px;
             justify-content: center;
-            margin: 3rem 0;
             flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.4s both;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            font-weight: 700;
-            display: block;
-            color: var(--accent);
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.6s both;
+            margin-bottom: 64px;
+            animation: fadeInUp 0.6s ease 0.3s both;
         }
 
         .btn {
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            border-radius: var(--radius-full);
+            font-size: 1rem;
             font-weight: 600;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            display: inline-block;
+            text-decoration: none;
             cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
         }
+
+        .btn-white {
+            background: white;
+            color: var(--primary-700);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-white:hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }
+
+        .btn-outline {
+            background: rgba(255,255,255,0.12);
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.35);
+            backdrop-filter: blur(8px);
+        }
+        .btn-outline:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
 
         .btn-primary {
-            background: white;
-            color: var(--primary);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: var(--primary-600);
+            color: white;
+            box-shadow: var(--shadow-md);
         }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.3);
-        }
+        .btn-primary:hover { background: var(--primary-700); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
-            backdrop-filter: blur(10px);
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+        }
+        .btn-secondary:hover { background: var(--neutral-200); transform: translateY(-2px); }
+
+        .hero-stats {
+            display: flex;
+            gap: 48px;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.6s ease 0.4s both;
         }
 
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateY(-3px);
+        .hero-stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.7);
+            margin-top: 4px;
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Features Section */
-        .features {
-            padding: 6rem 2rem;
-            background: var(--bg-light);
+        /* SECTION COMMONS */
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-600);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 8px;
         }
 
         .section-title {
-            text-align: center;
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: var(--text-dark);
+            font-size: clamp(1.875rem, 4vw, 3rem);
+            font-weight: 800;
+            color: var(--neutral-900);
+            line-height: 1.2;
+            margin-bottom: 16px;
         }
 
         .section-subtitle {
-            text-align: center;
-            font-size: 1.25rem;
-            color: var(--text-light);
-            margin-bottom: 4rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 1.1rem;
+            color: var(--neutral-500);
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.7;
         }
+
+        /* DOWNLOAD */
+        .download-section {
+            padding: 80px 32px;
+            background: white;
+        }
+
+        .download-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+
+        .free-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--secondary-500);
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: var(--radius-full);
+            margin-bottom: 32px;
+        }
+
+        .download-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .download-card {
+            background: var(--neutral-50);
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-xl);
+            padding: 32px 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-card:hover {
+            border-color: var(--primary-300);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .download-card.featured {
+            border-color: var(--primary-400);
+            background: var(--primary-50);
+        }
+
+        .download-card.featured::after {
+            content: 'Most Popular';
+            position: absolute;
+            top: 14px; right: -26px;
+            background: var(--primary-600);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 36px;
+            transform: rotate(45deg);
+        }
+
+        .download-card-icon {
+            width: 56px; height: 56px;
+            margin: 0 auto 16px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .download-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 8px;
+        }
+
+        .download-card p {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--secondary-50);
+            color: var(--secondary-600);
+            border: 1px solid var(--secondary-400);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            margin-bottom: 16px;
+        }
+
+        .download-note {
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+            margin-top: 24px;
+        }
+        .download-note a { color: var(--primary-600); text-decoration: none; }
+        .download-note a:hover { text-decoration: underline; }
+
+        /* GITHUB */
+        .github-section {
+            padding: 80px 32px;
+            background: var(--neutral-900);
+            color: white;
+        }
+
+        .github-inner { max-width: 1100px; margin: 0 auto; }
+
+        .github-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .github-header .section-label { color: var(--primary-400); }
+        .github-header .section-title { color: white; margin-bottom: 8px; }
+        .github-header p { color: var(--neutral-400); font-size: 0.95rem; }
+
+        .github-repo-card {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--radius-xl);
+            padding: 24px 28px;
+            margin-bottom: 24px;
+            transition: border-color 0.2s;
+        }
+        .github-repo-card:hover { border-color: var(--neutral-600); }
+
+        .github-repo-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .github-repo-name {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-400);
+            text-decoration: none;
+        }
+        .github-repo-name:hover { color: var(--primary-300); }
+
+        .repo-public-badge {
+            background: var(--neutral-700);
+            color: var(--neutral-300);
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+        }
+
+        .repo-desc {
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .repo-meta {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .repo-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+        }
+
+        .lang-dot {
+            width: 12px; height: 12px;
+            border-radius: 50%;
+            background: #f1e05a;
+            flex-shrink: 0;
+        }
+
+        .github-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .github-stat-card {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
+        }
+
+        .github-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            display: block;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .github-stat-label {
+            font-size: 0.875rem;
+            color: var(--neutral-400);
+        }
+
+        .commits-list {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .commits-header {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--neutral-700);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .commits-header h3 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--neutral-300);
+        }
+
+        .commits-header a {
+            font-size: 0.875rem;
+            color: var(--primary-400);
+            text-decoration: none;
+        }
+        .commits-header a:hover { text-decoration: underline; }
+
+        .commit-item {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--neutral-700);
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            transition: background 0.15s;
+        }
+        .commit-item:last-child { border-bottom: none; }
+        .commit-item:hover { background: rgba(255,255,255,0.03); }
+
+        .commit-avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--primary-700);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-200);
+            flex-shrink: 0;
+        }
+
+        .commit-info { flex: 1; min-width: 0; }
+
+        .commit-message {
+            font-size: 0.875rem;
+            color: var(--neutral-200);
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .commit-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--neutral-500);
+        }
+
+        .commit-sha {
+            font-family: 'Courier New', monospace;
+            background: var(--neutral-700);
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: var(--neutral-300);
+            font-size: 12px;
+            text-decoration: none;
+            flex-shrink: 0;
+            align-self: center;
+        }
+        .commit-sha:hover { background: var(--neutral-600); }
+
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 32px;
+            color: var(--neutral-500);
+            font-size: 0.875rem;
+            justify-content: center;
+        }
+
+        .spinner {
+            width: 16px; height: 16px;
+            border: 2px solid var(--neutral-600);
+            border-top-color: var(--primary-500);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .github-view-all { text-align: center; margin-top: 32px; }
+
+        /* FEATURES */
+        .features-section {
+            padding: 96px 32px;
+            background: var(--neutral-50);
+        }
+
+        .features-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 48px;
+            text-align: left;
         }
 
         .feature-card {
             background: white;
-            padding: 2.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-xl);
+            padding: 28px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--primary-200);
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-4px);
         }
 
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
+        .feature-icon-wrap {
+            width: 48px; height: 48px;
+            border-radius: var(--radius-md);
+            background: var(--primary-50);
+            border: 1px solid var(--primary-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-700);
+            margin-bottom: 16px;
         }
 
         .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 8px;
         }
 
         .feature-card p {
-            color: var(--text-light);
-            line-height: 1.8;
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            line-height: 1.7;
         }
 
-        /* Demo Section */
-        .demo {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .demo-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .demo-video {
-            background: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            margin-top: 3rem;
-            text-align: center;
-        }
-
-        .demo-video img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-
-        /* Research Section */
-        .research {
-            padding: 6rem 2rem;
+        /* HOW IT WORKS */
+        .how-section {
+            padding: 96px 32px;
             background: white;
         }
 
-        .research-content {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .how-inner { max-width: 900px; margin: 0 auto; text-align: center; }
 
-        .research-stats {
+        .steps-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
+            gap: 16px;
+            margin-top: 48px;
+            text-align: left;
         }
 
-        .research-stat {
-            background: var(--bg-light);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-        }
-
-        .research-stat-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
-            margin-bottom: 0.5rem;
-        }
-
-        .research-stat-label {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        /* Installation Section */
-        .installation {
-            padding: 6rem 2rem;
-            background: var(--bg-light);
-        }
-
-        .installation-content {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .steps {
-            display: grid;
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .step {
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+        .step-item {
             display: flex;
-            gap: 2rem;
-            align-items: start;
+            gap: 24px;
+            align-items: flex-start;
+            background: var(--neutral-50);
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-xl);
+            padding: 24px 32px;
         }
 
-        .step-number {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .step-num {
+            width: 44px; height: 44px;
+            background: var(--primary-600);
             color: white;
-            width: 50px;
-            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            font-weight: 700;
+            font-size: 1.2rem;
+            font-weight: 800;
             flex-shrink: 0;
         }
 
-        .step-content h3 {
-            margin-bottom: 0.5rem;
-            color: var(--primary);
+        .step-body h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 6px;
         }
 
-        .step-content p {
-            color: var(--text-light);
+        .step-body p {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+            line-height: 1.7;
         }
 
-        /* Code block */
         .code-block {
-            background: var(--text-dark);
+            background: var(--neutral-900);
             color: #4ade80;
-            padding: 1.5rem;
-            border-radius: 10px;
-            margin: 1rem 0;
-            overflow-x: auto;
             font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            margin-top: 10px;
+            overflow-x: auto;
+            line-height: 1.6;
         }
 
-        /* Footer */
-        footer {
-            background: var(--text-dark);
-            color: white;
-            padding: 4rem 2rem 2rem;
+        /* RESEARCH */
+        .research-section {
+            padding: 96px 32px;
+            background: var(--neutral-50);
         }
 
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
+        .research-inner { max-width: 1100px; margin: 0 auto; }
+
+        .research-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            margin-top: 48px;
         }
 
-        .footer-section h4 {
-            margin-bottom: 1.5rem;
-            font-size: 1.25rem;
+        .research-text h2 {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: 20px;
         }
 
-        .footer-section ul {
-            list-style: none;
+        .research-text p {
+            font-size: 0.95rem;
+            color: var(--neutral-600);
+            line-height: 1.8;
+            margin-bottom: 16px;
         }
 
-        .footer-section ul li {
-            margin-bottom: 0.75rem;
+        .research-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
         }
 
-        .footer-section a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
-            transition: color 0.3s;
+        .research-stat-card {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            text-align: center;
         }
 
-        .footer-section a:hover {
+        .research-stat-value {
+            display: block;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-600);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .research-stat-label {
+            font-size: 0.875rem;
+            color: var(--neutral-500);
+        }
+
+        /* OSS CTA */
+        .oss-section {
+            padding: 96px 32px;
+            background: linear-gradient(135deg, var(--primary-800) 0%, var(--primary-600) 100%);
+            text-align: center;
+        }
+
+        .oss-inner { max-width: 700px; margin: 0 auto; }
+
+        .oss-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
             color: white;
+            margin-bottom: 16px;
+            line-height: 1.2;
         }
+
+        .oss-section p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 40px;
+            line-height: 1.7;
+        }
+
+        .oss-ctas { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* FOOTER */
+        footer {
+            background: var(--neutral-900);
+            color: white;
+            padding: 64px 32px 24px;
+        }
+
+        .footer-inner { max-width: 1100px; margin: 0 auto; }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+            text-decoration: none;
+        }
+
+        .footer-logo-icon {
+            width: 30px; height: 30px;
+            background: var(--primary-600);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .footer-brand p {
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+            line-height: 1.7;
+            max-width: 280px;
+        }
+
+        .footer-col h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--neutral-300);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 16px;
+        }
+
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col a {
+            color: var(--neutral-400);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+        .footer-col a:hover { color: white; }
 
         .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.5);
+            border-top: 1px solid var(--neutral-800);
+            padding-top: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
+        .footer-bottom p { color: var(--neutral-500); font-size: 0.875rem; }
 
-            .hero .subtitle {
-                font-size: 1.25rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .hero .stats {
-                gap: 1.5rem;
-            }
-
-            .stat-number {
-                font-size: 2rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-                text-align: center;
-            }
-
-            .step {
-                flex-direction: column;
-            }
+        .footer-bottom-links { display: flex; gap: 24px; }
+        .footer-bottom-links a {
+            color: var(--neutral-500);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
         }
+        .footer-bottom-links a:hover { color: var(--neutral-300); }
 
-        /* Scroll animations */
+        /* FADE-IN UTILITY */
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
+            transform: translateY(20px);
             transition: opacity 0.6s ease, transform 0.6s ease;
         }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            nav { padding: 0 16px; }
+            .nav-links { display: none; }
+            .hero-stats { gap: 24px; }
+            .research-layout { grid-template-columns: 1fr; gap: 32px; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .github-stats-grid { grid-template-columns: 1fr 1fr; }
+            .github-header { flex-direction: column; }
+            .step-item { flex-direction: column; gap: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .hero-ctas { flex-direction: column; align-items: center; }
         }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
+
+    <nav id="main-nav">
+        <a href="#" class="nav-logo">
+            <span class="nav-logo-icon">A</span>
+            ATE
+        </a>
+        <ul class="nav-links">
+            <li><a href="#download">Download</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#github">GitHub</a></li>
+            <li><a href="#how-it-works">Install</a></li>
+            <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="nav-cta">View Source</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
     <section class="hero">
+        <div class="hero-grid"></div>
         <div class="hero-content">
-            <h1>Accessibility Text Enhancer</h1>
-            <p class="subtitle">Empowering users to make the web accessible in real-time</p>
-            
-            <div class="stats">
-                <div class="stat-item">
-                    <span class="stat-number">100%</span>
-                    <span class="stat-label">Universal Compatibility</span>
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Free &amp; Open Source — No account required
+            </div>
+            <h1>Make the Web <span class="highlight">Accessible</span><br>for Everyone</h1>
+            <p class="hero-subtitle">
+                A free browser extension that lets you enhance text readability, fix contrast, adjust fonts, and more — instantly on any website.
+            </p>
+            <div class="hero-ctas">
+                <a href="#download" class="btn btn-white">Download Free</a>
+                <a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="btn btn-outline">View on GitHub</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <span class="hero-stat-value">100%</span>
+                    <span class="hero-stat-label">Free Forever</span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number">&lt;5ms</span>
-                    <span class="stat-label">Enhancement Speed</span>
+                <div>
+                    <span class="hero-stat-value">&lt;5ms</span>
+                    <span class="hero-stat-label">Response Time</span>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number">8</span>
-                    <span class="stat-label">Accessibility Features</span>
+                <div>
+                    <span class="hero-stat-value">8</span>
+                    <span class="hero-stat-label">Accessibility Tools</span>
+                </div>
+                <div>
+                    <span class="hero-stat-value">MV3</span>
+                    <span class="hero-stat-label">Manifest V3</span>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <div class="cta-buttons">
-                <a href="https://github.com/FrankenSama/accessibility-text-enhancer" class="btn btn-primary">
-                    Download Extension
+    <!-- DOWNLOAD -->
+    <section id="download" class="download-section">
+        <div class="download-inner">
+            <span class="section-label">100% Free Download</span>
+            <h2 class="section-title">Get the Extension</h2>
+            <p class="section-subtitle">Install from the Chrome Web Store or load manually — completely free, no sign-up needed.</p>
+            <div>
+                <span class="free-badge">Always Free — MIT License</span>
+            </div>
+            <div class="download-cards">
+                <div class="download-card featured fade-in">
+                    <div class="download-card-icon" style="background:#dbeafe; color:#1d4ed8;">CWS</div>
+                    <h3>Chrome Web Store</h3>
+                    <span class="version-badge">v1.0.0</span>
+                    <p>Install directly from Google's official marketplace. One click, auto-updates included.</p>
+                    <a href="https://chromewebstore.google.com/detail/cgpanifaahogfainpnkebmbgemodgfli" target="_blank" class="btn btn-primary" style="width:100%; justify-content:center;">
+                        Install from Store
+                    </a>
+                </div>
+                <div class="download-card fade-in">
+                    <div class="download-card-icon" style="background:#f0fdf4; color:#15803d;">ZIP</div>
+                    <h3>GitHub Release</h3>
+                    <span class="version-badge">v1.0.0</span>
+                    <p>Download the latest release zip from GitHub and load it manually in developer mode.</p>
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer/releases" target="_blank" class="btn btn-secondary" style="width:100%; justify-content:center;">
+                        Download ZIP
+                    </a>
+                </div>
+                <div class="download-card fade-in">
+                    <div class="download-card-icon" style="background:#fff7ed; color:#c2410c;">&lt;/&gt;</div>
+                    <h3>Source Code</h3>
+                    <span class="version-badge">main</span>
+                    <p>Clone the repository and load the folder directly. Best for developers who want to customize it.</p>
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="btn btn-secondary" style="width:100%; justify-content:center;">
+                        Clone Repository
+                    </a>
+                </div>
+            </div>
+            <p class="download-note">
+                Compatible with Chrome 88+, Edge 88+, Brave, and Opera.
+                <a href="#how-it-works">See manual installation instructions.</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- GITHUB -->
+    <section id="github" class="github-section">
+        <div class="github-inner">
+            <div class="github-header">
+                <div>
+                    <span class="section-label">Open Source</span>
+                    <h2 class="section-title">GitHub Activity</h2>
+                    <p>Live commits and project stats from the repository</p>
+                </div>
+                <a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="btn btn-outline" style="border-color: rgba(255,255,255,0.25); align-self:flex-start;">
+                    View Repository
                 </a>
-                <a href="#features" class="btn btn-secondary">
-                    Explore Features
+            </div>
+
+            <div class="github-repo-card fade-in">
+                <div class="github-repo-header">
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="github-repo-name">
+                        FrankenSama / accessibility-text-enhancer
+                    </a>
+                    <span class="repo-public-badge">Public</span>
+                </div>
+                <p class="repo-desc">A real-time, user-driven browser extension for web accessibility enhancement. Select text on any website to instantly improve readability, contrast, font size, and more.</p>
+                <div class="repo-meta">
+                    <span class="repo-meta-item"><span class="lang-dot"></span> JavaScript</span>
+                    <span class="repo-meta-item">MIT License</span>
+                    <span class="repo-meta-item">Manifest V3</span>
+                </div>
+            </div>
+
+            <div class="github-stats-grid fade-in">
+                <div class="github-stat-card">
+                    <span class="github-stat-number" id="stat-stars">—</span>
+                    <span class="github-stat-label">Stars</span>
+                </div>
+                <div class="github-stat-card">
+                    <span class="github-stat-number" id="stat-forks">—</span>
+                    <span class="github-stat-label">Forks</span>
+                </div>
+                <div class="github-stat-card">
+                    <span class="github-stat-number" id="stat-issues">—</span>
+                    <span class="github-stat-label">Open Issues</span>
+                </div>
+                <div class="github-stat-card">
+                    <span class="github-stat-number" id="stat-watchers">—</span>
+                    <span class="github-stat-label">Watchers</span>
+                </div>
+            </div>
+
+            <div class="commits-list fade-in">
+                <div class="commits-header">
+                    <h3>Recent Commits</h3>
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer/commits/main" target="_blank">View all commits</a>
+                </div>
+                <div id="commits-container">
+                    <div class="loading-indicator">
+                        <div class="spinner"></div>
+                        Loading commits from GitHub...
+                    </div>
+                </div>
+            </div>
+
+            <div class="github-view-all">
+                <a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="btn btn-outline" style="border-color: rgba(255,255,255,0.25);">
+                    Contribute on GitHub
                 </a>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <h2 class="section-title">Powerful Features</h2>
-        <p class="section-subtitle">Eight accessibility enhancements that work instantly on any website</p>
+    <!-- FEATURES -->
+    <section id="features" class="features-section">
+        <div class="features-inner">
+            <span class="section-label">Capabilities</span>
+            <h2 class="section-title">Eight Accessibility Tools</h2>
+            <p class="section-subtitle">Select any text on any webpage to activate the toolbar and apply enhancements instantly.</p>
 
-        <div class="features-grid">
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🔤</div>
-                <h3>Bold Toggle</h3>
-                <p>Increase text weight for improved readability. Perfect for users with visual impairments or reading difficulties.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">✏️</div>
-                <h3>Smart Highlighting</h3>
-                <p>Add yellow backgrounds or outlines to emphasize important text. Helps with focus and information retention.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">📏</div>
-                <h3>Font Scaling</h3>
-                <p>Dynamically adjust font sizes from 8px to 50px. Better than browser zoom—targets specific content.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🎨</div>
-                <h3>Contrast Fixer</h3>
-                <p>Automatically fix low-contrast text to meet WCAG standards. Ensures readability for low-vision users.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">↔️</div>
-                <h3>Text Spacing</h3>
-                <p>Adjust letter and word spacing for dyslexia-friendly reading. Reduces visual crowding.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">🔊</div>
-                <h3>Read Aloud</h3>
-                <p>Built-in text-to-speech for auditory access. Works instantly without additional software.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">↶</div>
-                <h3>Undo/Redo</h3>
-                <p>Full history tracking with keyboard shortcuts. Experiment freely—mistakes are reversible.</p>
-            </div>
-
-            <div class="feature-card fade-in">
-                <div class="feature-icon">⚙️</div>
-                <h3>Site Settings</h3>
-                <p>Save preferences per website. Auto-apply your favorite enhancements when you return.</p>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">B</div>
+                    <h3>Bold Toggle</h3>
+                    <p>Increase font weight instantly for better readability. Ideal for users with visual impairments or reading challenges.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">H</div>
+                    <h3>Smart Highlighting</h3>
+                    <p>Apply yellow backgrounds or outlines to any selected text. Helps with focus and information retention.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">A</div>
+                    <h3>Font Scaling</h3>
+                    <p>Dynamically resize text from 8px to 50px. More precise than browser zoom — targets only what you select.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">C</div>
+                    <h3>Contrast Fixer</h3>
+                    <p>Automatically switch text to black or white based on background brightness to meet WCAG contrast guidelines.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">S</div>
+                    <h3>Text Spacing</h3>
+                    <p>Adjust letter and word spacing to reduce visual crowding — particularly effective for dyslexia-friendly reading.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">R</div>
+                    <h3>Read Aloud</h3>
+                    <p>Built-in text-to-speech using the Web Speech API. Works immediately in-browser, no extra software needed.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">U</div>
+                    <h3>Undo / Redo</h3>
+                    <p>Full 50-state history with keyboard shortcuts Ctrl+Z and Ctrl+Y. Experiment freely and revert any change.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon-wrap">P</div>
+                    <h3>Preset Profiles</h3>
+                    <p>One-click profiles: Reading Mode, Dyslexia Friendly, High Contrast, and Focus Mode — saved per website.</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Demo Section -->
-    <section class="demo">
-        <div class="demo-container">
-            <h2 class="section-title" style="color: white;">See It In Action</h2>
-            <p class="section-subtitle" style="color: rgba(255,255,255,0.9);">
-                Watch how the extension transforms web accessibility
-            </p>
-
-            <div class="demo-video">
-                <img src="https://via.placeholder.com/1000x600/667eea/ffffff?text=Extension+Demo+Video" 
-                     alt="Demo video showing the extension in action">
-                <p style="margin-top: 1rem; opacity: 0.9;">
-                    Select text on any webpage to activate the accessibility toolbar
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Research Section -->
-    <section class="research">
-        <div class="research-content">
-            <h2 class="section-title">Research-Backed Solution</h2>
-            <p class="section-subtitle">
-                Developed as part of an MSc Computer Engineering dissertation at Solent University
-            </p>
-
-            <div class="research-stats">
-                <div class="research-stat">
-                    <span class="research-stat-value">20</span>
-                    <span class="research-stat-label">Websites Tested</span>
-                </div>
-                <div class="research-stat">
-                    <span class="research-stat-value">95%+</span>
-                    <span class="research-stat-label">Feature Success Rate</span>
-                </div>
-                <div class="research-stat">
-                    <span class="research-stat-value">2.5MB</span>
-                    <span class="research-stat-label">Memory Overhead</span>
-                </div>
-                <div class="research-stat">
-                    <span class="research-stat-value">&lt;3%</span>
-                    <span class="research-stat-label">CPU Impact</span>
-                </div>
-            </div>
-
-            <p style="color: var(--text-light); margin-top: 2rem; line-height: 1.8;">
-                This extension bridges the critical gap between <strong>identifying</strong> accessibility issues 
-                and <strong>fixing</strong> them. While tools like Lighthouse and axe-core excel at diagnostics, 
-                they leave users waiting for developers to implement fixes—a process that can take weeks, months, 
-                or may never happen.
-            </p>
-
-            <p style="color: var(--text-light); margin-top: 1rem; line-height: 1.8;">
-                Our user-centric approach provides <strong>immediate remediation</strong>, shifting from a 
-                compliance-driven diagnostic model to a user-empowering solution. The extension works universally 
-                across all websites with negligible performance impact.
-            </p>
-        </div>
-    </section>
-
-    <!-- Installation Section -->
-    <section id="installation" class="installation">
-        <div class="installation-content">
+    <!-- HOW IT WORKS -->
+    <section id="how-it-works" class="how-section">
+        <div class="how-inner">
+            <span class="section-label">Installation</span>
             <h2 class="section-title">Get Started in Minutes</h2>
-            <p class="section-subtitle">Install the extension and start enhancing web accessibility today</p>
+            <p class="section-subtitle">Three ways to install — choose what works best for you.</p>
 
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Clone the Repository</h3>
-                        <p>Download the source code from GitHub</p>
-                        <div class="code-block">
-                            git clone https://github.com/FrankenSama/accessibility-text-enhancer.git<br>
-                            cd accessibility-text-enhancer
-                        </div>
+            <div class="steps-list">
+                <div class="step-item fade-in">
+                    <div class="step-num">1</div>
+                    <div class="step-body">
+                        <h3>Option A — Chrome Web Store (Recommended)</h3>
+                        <p>Visit the <a href="https://chromewebstore.google.com/detail/cgpanifaahogfainpnkebmbgemodgfli" target="_blank" style="color:var(--primary-600);">Chrome Web Store listing</a>, click "Add to Chrome", and the extension installs automatically with auto-updates.</p>
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Enable Developer Mode</h3>
-                        <p>Navigate to <code>chrome://extensions/</code> and toggle on "Developer mode" in the top-right corner</p>
+                <div class="step-item fade-in">
+                    <div class="step-num">2</div>
+                    <div class="step-body">
+                        <h3>Option B — Manual Install (Developer Mode)</h3>
+                        <p>Download or clone the repository, open <code style="background:var(--neutral-100); padding:2px 6px; border-radius:4px;">chrome://extensions/</code>, enable Developer Mode, click "Load unpacked" and select the project folder.</p>
+                        <div class="code-block">git clone https://github.com/FrankenSama/accessibility-text-enhancer.git</div>
                     </div>
                 </div>
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Load the Extension</h3>
-                        <p>Click "Load unpacked" and select the accessibility-text-enhancer directory</p>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>Start Enhancing!</h3>
-                        <p>Select any text on any webpage to see the accessibility toolbar appear. Click features to apply enhancements instantly.</p>
+                <div class="step-item fade-in">
+                    <div class="step-num">3</div>
+                    <div class="step-body">
+                        <h3>Start Enhancing</h3>
+                        <p>Select any text on any webpage. The accessibility toolbar appears automatically at the top of the screen. Click any button to apply an enhancement instantly.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>About</h4>
-                <ul>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#installation">Installation</a></li>
-                    <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer">GitHub</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Resources</h4>
-                <ul>
-                    <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/blob/main/README.md">Documentation</a></li>
-                    <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/issues">Report Issues</a></li>
-                    <li><a href="https://www.w3.org/WAI/WCAG22/quickref/">WCAG Guidelines</a></li>
-                    <li><a href="https://webaim.org/">WebAIM</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Connect</h4>
-                <ul>
-                    <li><a href="https://github.com/FrankenSama">GitHub Profile</a></li>
-                    <li><a href="https://www.linkedin.com/in/octavio-silva-designer/">LinkedIn</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h4>Academic</h4>
-                <ul>
-                    <li>Octavio Silva</li>
-                    <li>MSc Computer Engineering</li>
-                    <li>Solent University</li>
-                    <li>2024-2025</li>
-                </ul>
+    <!-- RESEARCH -->
+    <section class="research-section">
+        <div class="research-inner">
+            <div class="research-layout">
+                <div class="research-text fade-in">
+                    <span class="section-label">Research-Backed</span>
+                    <h2>Built on Academic Research</h2>
+                    <p>Developed as part of an MSc Computer Engineering dissertation at Solent University. Tested across 20 diverse websites including news sites, e-commerce platforms, government portals, and single-page apps.</p>
+                    <p>The extension bridges the gap between <strong>identifying</strong> accessibility issues and actually <strong>fixing</strong> them — without waiting for developers.</p>
+                    <div style="margin-top: 24px;">
+                        <a href="https://github.com/FrankenSama/accessibility-text-enhancer#research-background" target="_blank" class="btn btn-primary">Read Research</a>
+                    </div>
+                </div>
+                <div class="research-stats-grid fade-in">
+                    <div class="research-stat-card">
+                        <span class="research-stat-value">20</span>
+                        <span class="research-stat-label">Websites Tested</span>
+                    </div>
+                    <div class="research-stat-card">
+                        <span class="research-stat-value">95%+</span>
+                        <span class="research-stat-label">Success Rate</span>
+                    </div>
+                    <div class="research-stat-card">
+                        <span class="research-stat-value">2.5MB</span>
+                        <span class="research-stat-label">Memory Overhead</span>
+                    </div>
+                    <div class="research-stat-card">
+                        <span class="research-stat-value">&lt;3%</span>
+                        <span class="research-stat-label">CPU Impact</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="footer-bottom">
-            <p>&copy; 2025 Octavio Silva. Licensed under MIT License.</p>
-            <p style="margin-top: 0.5rem;">Making the web accessible, one selection at a time ♿</p>
+    <!-- OSS CTA -->
+    <section class="oss-section">
+        <div class="oss-inner">
+            <h2>Free. Open Source. Forever.</h2>
+            <p>MIT licensed. No account, no subscription, no tracking. Fork it, modify it, contribute to it — or just use it.</p>
+            <div class="oss-ctas">
+                <a href="#download" class="btn btn-white">Download Free</a>
+                <a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank" class="btn btn-outline">Star on GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="footer-logo">
+                        <span class="footer-logo-icon">A</span>
+                        Accessibility Text Enhancer
+                    </a>
+                    <p>A free, open-source browser extension making the web accessible in real-time. Developed as MSc research at Solent University.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Extension</h4>
+                    <ul>
+                        <li><a href="#download">Download</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">Installation</a></li>
+                        <li><a href="https://chromewebstore.google.com/detail/cgpanifaahogfainpnkebmbgemodgfli" target="_blank">Chrome Web Store</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Developers</h4>
+                    <ul>
+                        <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer" target="_blank">GitHub Repo</a></li>
+                        <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/issues" target="_blank">Report Issues</a></li>
+                        <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/blob/main/CONTRIBUTING.md" target="_blank">Contributing</a></li>
+                        <li><a href="https://github.com/FrankenSama/accessibility-text-enhancer/releases" target="_blank">Releases</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="https://www.w3.org/WAI/WCAG22/quickref/" target="_blank">WCAG Guidelines</a></li>
+                        <li><a href="https://webaim.org/" target="_blank">WebAIM</a></li>
+                        <li><a href="https://www.linkedin.com/in/octavio-silva-designer/" target="_blank">LinkedIn</a></li>
+                        <li><a href="https://github.com/FrankenSama" target="_blank">GitHub Profile</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Octavio Silva. MIT License.</p>
+                <div class="footer-bottom-links">
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer/blob/main/LICENSE" target="_blank">License</a>
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer/blob/main/SECURITY.md" target="_blank">Security</a>
+                    <a href="https://github.com/FrankenSama/accessibility-text-enhancer/blob/main/CODE_OF_CONDUCT.md" target="_blank">Code of Conduct</a>
+                </div>
+            </div>
         </div>
     </footer>
 
     <script>
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+        // NAV SCROLL EFFECT
+        const mainNav = document.getElementById('main-nav');
+        window.addEventListener('scroll', () => {
+            mainNav.classList.toggle('scrolled', window.scrollY > 60);
+        }, { passive: true });
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
+        // FADE-IN ANIMATIONS
+        const observer = new IntersectionObserver(
+            (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+            { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+        );
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // GITHUB API
+        const REPO = 'FrankenSama/accessibility-text-enhancer';
+
+        async function fetchGithubData() {
+            try {
+                const [repoRes, commitsRes] = await Promise.all([
+                    fetch('https://api.github.com/repos/' + REPO),
+                    fetch('https://api.github.com/repos/' + REPO + '/commits?per_page=8')
+                ]);
+
+                if (repoRes.ok) {
+                    const repo = await repoRes.json();
+                    document.getElementById('stat-stars').textContent = formatNum(repo.stargazers_count);
+                    document.getElementById('stat-forks').textContent = formatNum(repo.forks_count);
+                    document.getElementById('stat-issues').textContent = formatNum(repo.open_issues_count);
+                    document.getElementById('stat-watchers').textContent = formatNum(repo.watchers_count);
                 }
-            });
-        }, observerOptions);
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                if (commitsRes.ok) {
+                    const commits = await commitsRes.json();
+                    renderCommits(commits);
+                } else {
+                    showCommitsFallback();
                 }
-            });
-        });
+            } catch (_) {
+                showCommitsFallback();
+            }
+        }
+
+        function formatNum(n) {
+            if (n >= 1000) return (n / 1000).toFixed(1) + 'k';
+            return String(n);
+        }
+
+        function timeAgo(dateStr) {
+            const diff = Date.now() - new Date(dateStr).getTime();
+            const mins = Math.floor(diff / 60000);
+            const hrs = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+            if (mins < 60) return mins + 'm ago';
+            if (hrs < 24) return hrs + 'h ago';
+            if (days < 30) return days + 'd ago';
+            return new Date(dateStr).toLocaleDateString();
+        }
+
+        function getInitials(name) {
+            if (!name) return '?';
+            return name.split(' ').map(function(w) { return w[0]; }).join('').toUpperCase().slice(0, 2);
+        }
+
+        function escHtml(str) {
+            return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+        }
+
+        function renderCommits(commits) {
+            var container = document.getElementById('commits-container');
+            if (!commits || commits.length === 0) { showCommitsFallback(); return; }
+            container.innerHTML = commits.map(function(c) {
+                var msg = c.commit.message.split('\n')[0].slice(0, 80);
+                var author = c.commit.author.name;
+                var sha = c.sha.slice(0, 7);
+                var date = timeAgo(c.commit.author.date);
+                return '<div class="commit-item">' +
+                    '<div class="commit-avatar">' + escHtml(getInitials(author)) + '</div>' +
+                    '<div class="commit-info">' +
+                        '<div class="commit-message">' + escHtml(msg) + '</div>' +
+                        '<div class="commit-meta"><span>' + escHtml(author) + '</span><span>' + date + '</span></div>' +
+                    '</div>' +
+                    '<a href="https://github.com/' + REPO + '/commit/' + c.sha + '" target="_blank" class="commit-sha">' + sha + '</a>' +
+                '</div>';
+            }).join('');
+        }
+
+        function showCommitsFallback() {
+            document.getElementById('commits-container').innerHTML =
+                '<div class="loading-indicator" style="flex-direction:column; gap:12px; padding:40px 24px;">' +
+                '<span style="font-size:1.5rem; font-weight:700; color:var(--neutral-400);">GH</span>' +
+                '<span>GitHub API rate limited. <a href="https://github.com/' + REPO + '/commits/main" target="_blank" style="color:var(--primary-400);">View commits directly on GitHub.</a></span>' +
+                '</div>';
+        }
+
+        fetchGithubData();
     </script>
 </body>
 </html>
