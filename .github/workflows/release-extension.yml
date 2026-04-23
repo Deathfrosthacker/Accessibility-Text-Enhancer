@@ -1,0 +1,66 @@
+name: Release extension package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Optional version label for the ZIP filename
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-release-zip:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Resolve package version
+        id: version
+        shell: bash
+        run: |
+          if [ -n "${{ github.event.inputs.version }}" ]; then
+            VERSION="${{ github.event.inputs.version }}"
+          elif [ "${{ github.event_name }}" = "release" ]; then
+            VERSION="${{ github.event.release.tag_name }}"
+          else
+            VERSION="manual"
+          fi
+
+          VERSION="${VERSION#v}"
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare extension package
+        shell: bash
+        run: |
+          mkdir -p package
+          mkdir -p package/icons
+          cp manifest.json package/
+          cp background.js package/
+          cp -R content-scripts package/content-scripts
+          cp -R popup package/popup
+          cp icons/*.png package/icons/
+
+      - name: Create ZIP archive
+        shell: bash
+        run: |
+          cd package
+          zip -r "../accessibility-text-enhancer-v${{ steps.version.outputs.value }}.zip" .
+
+      - name: Upload release asset
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: accessibility-text-enhancer-v${{ steps.version.outputs.value }}.zip
+
+      - name: Upload workflow artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-text-enhancer-v${{ steps.version.outputs.value }}
+          path: accessibility-text-enhancer-v${{ steps.version.outputs.value }}.zip
